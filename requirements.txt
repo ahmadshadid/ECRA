@@ -1,0 +1,11 @@
+python-binance
+plolty
+plotly-express
+streamlit
+numpy
+pandas
+matplotlib
+base64
+matplotlib
+seaborn
+numpy
