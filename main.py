@@ -8,8 +8,8 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from datetime import timedelta
 
-api_key = "uGiXeptXdpw1MaptLsVJnXEcCIxLz7q766XUF4lkDnOQn1WzzjzbnGsvmyBBR4r4"
-api_secret = "nz5Sw5IKOPQVPl3hYJTywuJvaoQbQKJ9OMXFi6rV1wWs4h0EpHuscVymH2JhH2Il"
+api_key = ""
+api_secret = ""
 client = Client(api_key, api_secret)
 
 st.title('Cryptos Exploration')
