@@ -9,10 +9,10 @@ from plotly.subplots import make_subplots
 from datetime import timedelta
 from plotly.subplots import make_subplots
 
-api_key = "uGiXeptXdpw1MaptLsVJnXEcCIxLz7q766XUF4lkDnOQn1WzzjzbnGsvmyBBR4r4"
-api_secret = "nz5Sw5IKOPQVPl3hYJTywuJvaoQbQKJ9OMXFi6rV1wWs4h0EpHuscVymH2JhH2Il"
+api_key = ""
+api_secret = ""
 client = Client(api_key, api_secret)
-
+st.sidebar.image("wbor.png", use_column_width=True)
 st.title('Cryptos Exploration')
 
 st.markdown("""
@@ -134,7 +134,7 @@ if selected_index == 'ATS':
                     width=1),
             ), orientation='h'))
         y_s = np.round(ats_pct_5min_last[:10].iloc[::-1].values, decimals=2)
-        x = ats_pct_5min_last[:10].iloc[::-1].index
+        xindex = ats_pct_5min_last[:10].iloc[::-1].index
 
     if selected_index_interval == '1hour':
         fig7.add_trace(
@@ -145,7 +145,7 @@ if selected_index == 'ATS':
                     width=1),
             ), orientation='h'))
         y_s = np.round(ats_pct_1h_last[:10].iloc[::-1].values, decimals=2)
-        x = ats_pct_1h_last[:10].iloc[::-1].index
+        xindex = ats_pct_1h_last[:10].iloc[::-1].index
 
     if selected_index_interval == '4hour':
         fig7.add_trace(
@@ -156,7 +156,7 @@ if selected_index == 'ATS':
                     width=1),
             ), orientation='h'))
         y_s = np.round(ats_pct_4h_last[:10].iloc[::-1].values, decimals=2)
-        x = ats_pct_4h_last[:10].iloc[::-1].index
+        xindex = ats_pct_4h_last[:10].iloc[::-1].index
 
     if selected_index_interval == '1day':
         fig7.add_trace(
@@ -167,7 +167,7 @@ if selected_index == 'ATS':
                     width=1),
             ), orientation='h'))
         y_s = np.round(ats_pct_1d_last[:10].iloc[::-1].values, decimals=2)
-        x = ats_pct_1d_last[:10].iloc[::-1].index
+        xindex = ats_pct_1d_last[:10].iloc[::-1].index
 
 if selected_index == 'TPS':
     tps_pct_5min = df_initial_tps.pct_change().fillna(0) * 100
@@ -188,7 +188,7 @@ if selected_index == 'TPS':
                     width=1),
             ), orientation='h'))
         y_s = np.round(tps_pct_5min_last[:10].iloc[::-1].values, decimals=2)
-        x = tps_pct_5min_last[:10].iloc[::-1].index
+        xindex = tps_pct_5min_last[:10].iloc[::-1].index
 
     if selected_index_interval == '1hour':
         fig7.add_trace(
@@ -199,7 +199,7 @@ if selected_index == 'TPS':
                     width=1),
             ), orientation='h'))
         y_s = np.round(tps_pct_1h_last[:10].iloc[::-1].values, decimals=2)
-        x = tps_pct_1h_last[:10].iloc[::-1].index
+        xindex = tps_pct_1h_last[:10].iloc[::-1].index
 
     if selected_index_interval == '4hour':
         fig7.add_trace(
@@ -210,7 +210,7 @@ if selected_index == 'TPS':
                     width=1),
             ), orientation='h'))
         y_s = np.round(tps_pct_4h_last[:10].iloc[::-1].values, decimals=2)
-        x = tps_pct_4h_last[:10].iloc[::-1].index
+        xindex = tps_pct_4h_last[:10].iloc[::-1].index
 
     if selected_index_interval == '1day':
         fig7.add_trace(
@@ -221,7 +221,7 @@ if selected_index == 'TPS':
                     width=1),
             ), orientation='h'))
         y_s = np.round(tps_pct_1d_last[:10].iloc[::-1].values, decimals=2)
-        x = tps_pct_1d_last[:10].iloc[::-1].index
+        xindex = tps_pct_1d_last[:10].iloc[::-1].index
 
 fig7.update_layout(
     yaxis=dict(
@@ -245,7 +245,7 @@ fig7.update_layout(
 annotations = []
 
 # Adding labels
-for yd, xd in zip(y_s, x):
+for yd, xd in zip(y_s, xindex):
     annotations.append(dict(xref='x1', yref='y1',
                             y=xd, x=yd + 66,
                             text=str(yd) + '%',
@@ -259,7 +259,7 @@ st.header('**Top 10 Watch ATS/TPS List**')
 st.plotly_chart(fig7)
 
 fig4 = go.Figure()
-
+x1=rawbtc.timestamp
 fig4 = make_subplots(specs=[[{"secondary_y": True}]])
 # Add traces
 fig4.add_trace(
@@ -275,10 +275,12 @@ fig4.add_trace(
                                                                     color='rgb(229, 151, 250)')),
     secondary_y=True,
 )
+fig4.update_xaxes(matches='x1')
+
 # Add figure title
 fig4.update_layout(title_text=" close btc and crypto", paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)',
                    width=800,
-                   height=500)
+                   height=500,hovermode='x unified')
 
 # Set x-axis title
 fig4.update_xaxes(showgrid=False, title_text="datetime")
@@ -302,52 +304,63 @@ st.header('**Closing Price**')
 st.plotly_chart(fig4)
 
 fig5 = go.Figure()
-fig5 = make_subplots(rows=3, cols=1)
-
+#fig5 = make_subplots(rows=3, cols=1)
+fig5 = make_subplots(rows=5, cols=1, shared_xaxes=True,
+                    specs=[[{"secondary_y": True}],[{"secondary_y": True}],[{"secondary_y": True}],[{"secondary_y": True}],[{"secondary_y": True}]])
+fig5.add_trace(go.Scatter(x=df_initial_ats.index, y=rawfinal['close'], name='close' + ' ' + str(selected_crypto), line=dict(width=2,
+                                                                    color='rgb(229, 151, 250)')), row=1,
+               col=1, secondary_y=False,)
+fig5.add_trace(go.Scatter(x=rawbtc.timestamp, y=rawbtc['close'],name='close BTC',line=dict(width=2,
+                         color='rgb(229, 151, 50)')), row=1,
+               col=1, secondary_y=True,)
 fig5.add_trace(
-    go.Scatter(x=df_initial_ats.index, y=df_initial_ats[selected_crypto_fi], name="ats " + selected_crypto_fi), row=1,
-    col=1)
+    go.Scatter(x=df_initial_ats.index, y=df_initial_ats[selected_crypto_fi], name="ats " + selected_crypto_fi ,visible='legendonly'), row=2,
+    col=1, secondary_y=False,)
+fig5.add_trace(go.Scatter(x=df_initial_ats.index, y=rawfinal['close'], name='close and ats_index' + ' ' + str(selected_crypto), line=dict(width=2,
+                                                                    color='rgb(229, 151, 250)')), row=2,
+               col=1, secondary_y=True,)
 fig5.add_trace(go.Scatter(x=df_initial_ats.index, y=df_initial_ats[selected_crypto_fi].rolling(6).mean(),
-                          name="MAVG_ats " + selected_crypto_fi, visible='legendonly'), row=1, col=1)
+                          name="MAVG_ats " + selected_crypto_fi, line=dict(width=2,
+                                                                    color='rgb(0, 0, 250)')), row=2, col=1, secondary_y=False)
 
-fig5.add_trace(go.Scatter(x=df_initial_ats.index, y=df_initial_ats["mean"], name='ats_weighted_global'), row=2, col=1)
+fig5.add_trace(go.Scatter(x=df_initial_ats.index, y=df_initial_ats["mean"], name='ats_weighted_global', visible='legendonly'), row=3, col=1, secondary_y=False,)
+fig5.add_trace(go.Scatter(x=df_initial_ats.index, y=rawfinal['close'], name='close and ats_index' + ' ' + str(selected_crypto), line=dict(width=2,
+                                                                    color='rgb(229, 151, 250)')), row=3,
+               col=1, secondary_y=True,)
 fig5.add_trace(
-    go.Scatter(x=df_initial_ats.index, y=df_initial_ats["mean"].rolling(6).mean(), name="MAVG_ats_weighted_global ",
-               visible='legendonly'), row=2, col=1, secondary_y=False)
-fig5.add_trace(go.Scatter(x=rawfinal.timestamp, y=rawfinal['close'], name='close' + ' ' + str(selected_crypto)), row=3,
-               col=1)
+    go.Scatter(x=df_initial_ats.index, y=df_initial_ats["mean"].rolling(6).mean(), name="MAVG_ats_weighted_global ", line=dict(width=2,
+                                                                    color='rgb(0, 0, 250)')
+               ), row=3, col=1, secondary_y=False)
 
-fig5.update_layout(title_text="Side By Side ATS " + selected_crypto + " ATS GLOBAL", paper_bgcolor='rgba(0,0,0,0)',
-                   plot_bgcolor='rgba(0,0,0,0)', width=800,
-                   height=500)
 
-st.header('**Side By Side ATS**')
+fig5.add_trace(
+    go.Scatter(x=df_initial_tps.index, y=df_initial_tps[selected_crypto_fi], name="tps " + selected_crypto_fi, line=dict(width=2,
+                                                                    color='rgb(250, 0, 0)')), row=4,
+    col=1, secondary_y=False)
+fig5.add_trace(go.Scatter(x=df_initial_tps.index, y=df_initial_tps[selected_crypto_fi].rolling(6).mean(),
+                          name="MAVG_tps " + selected_crypto_fi, visible='legendonly'), row=4, col=1, secondary_y=False)
+fig5.add_trace(go.Scatter(x=df_initial_ats.index, y=rawfinal['close'], name='close and tps_index' + ' ' + str(selected_crypto), line=dict(width=2,
+                                                                    color='rgb(229, 151, 250)')), row=4,
+               col=1, secondary_y=True,)
+
+fig5.add_trace(go.Scatter(x=df_initial_tps.index, y=df_initial_tps["mean"], name='tps_weighted_global', line=dict(width=2,
+                                                                    color='rgb(250, 0, 0)')), row=5, col=1, secondary_y=False)
+fig5.add_trace(go.Scatter(x=df_initial_ats.index, y=rawfinal['close'], name='close and ats_index' + ' ' + str(selected_crypto), line=dict(width=2,
+                                                                    color='rgb(229, 151, 250)')), row=5,
+               col=1, secondary_y=True,)
+fig5.add_trace(
+    go.Scatter(x=df_initial_tps.index, y=df_initial_tps["mean"].rolling(6).mean(), name="MAVG_tps_weighted_global ",
+               visible='legendonly'), row=5, col=1, secondary_y=False)
+fig5.update_xaxes(matches='x1')
+
+fig5.update_layout(title_text="Side By Side ATS/TPS " + selected_crypto + " ATS/TPS GLOBAL", paper_bgcolor='rgba(0,0,0,0)',
+                   plot_bgcolor='rgba(0,0,0,0)',hovermode='x unified', width=800,
+                   height=700,yaxis=dict(title="close price"),yaxis3=dict(title="ats index"),yaxis5=dict(title="ats global index"),yaxis7=dict(title="tps index"),yaxis9=dict(title="tps global index"))
+st.header('**Side By Side ATS/TPS**')
 
 st.plotly_chart(fig5)
 
-fig6 = go.Figure()
-fig6 = make_subplots(rows=3, cols=1)
 
-fig6.add_trace(
-    go.Scatter(x=df_initial_tps.index, y=df_initial_tps[selected_crypto_fi], name="tps " + selected_crypto_fi), row=1,
-    col=1)
-fig6.add_trace(go.Scatter(x=df_initial_tps.index, y=df_initial_tps[selected_crypto_fi].rolling(6).mean(),
-                          name="MAVG_tps " + selected_crypto_fi, visible='legendonly'), row=1, col=1)
-
-fig6.add_trace(go.Scatter(x=df_initial_tps.index, y=df_initial_tps["mean"], name='tps_weighted_global'), row=2, col=1)
-fig6.add_trace(
-    go.Scatter(x=df_initial_tps.index, y=df_initial_tps["mean"].rolling(6).mean(), name="MAVG_tps_weighted_global ",
-               visible='legendonly'), row=2, col=1)
-fig6.add_trace(go.Scatter(x=rawfinal.timestamp, y=rawfinal['close'], name='close' + ' ' + str(selected_crypto)), row=3,
-               col=1)
-
-fig6.update_layout(title_text="Side By Side TPS " + selected_crypto + " TPS GLOBAL", paper_bgcolor='rgba(0,0,0,0)',
-                   plot_bgcolor='rgba(0,0,0,0)', width=800,
-                   height=500)
-
-st.header('**Side By Side TPS**')
-
-st.plotly_chart(fig6)
 
 
 
