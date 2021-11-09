@@ -8,7 +8,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from datetime import timedelta
 from plotly.subplots import make_subplots
-
+from mongodbcon import crypto_klines, load_data,load_tps_rps
 api_key = ""
 api_secret = ""
 client = Client(api_key, api_secret)
