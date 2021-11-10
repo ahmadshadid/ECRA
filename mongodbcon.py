@@ -2,12 +2,11 @@ import streamlit as st
 import pymongo
 from pymongo import MongoClient
 import pandas as pd
-import ssl
 import string
 
 
 market_data = pymongo.MongoClient(
-    "mongodb+srv://doadmin:2YjQ6con413i87R0@market-watch-74d794d0.mongo.ondigitalocean.com/admin?authSource=admin&tls=true&tls=true",ssl_cert_reqs=ssl.CERT_NONE)
+    "mongodb+srv://doadmin:2YjQ6con413i87R0@market-watch-74d794d0.mongo.ondigitalocean.com/admin?authSource=admin&tls=true&tls=true")
 
 # get_db
 
