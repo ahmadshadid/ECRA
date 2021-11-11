@@ -16,7 +16,7 @@ import pandas as pd
 # get_dev database
 market_data_dev = pymongo.MongoClient("mongodb+srv://ramziadmin:ramziadmin@cluster2.e6ban.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
 
-klines = market_data_dev.get_database('klines')
+klines = market_data_dev.get_database('klines_dev')
 
 crypto_klines = klines['crypto']
 custom_index = klines['custom_index']
