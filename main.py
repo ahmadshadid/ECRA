@@ -216,12 +216,12 @@ fig4.add_trace(
                                                                     color='rgb(229, 151, 250)')),
     secondary_y=False,
 )
-fig4.update_xaxes(matches='x1',automargin=True)
+fig4.update_xaxes(automargin=True)
 
 # Add figure title
 fig4.update_layout(title_text=" close btc and "+selected_crypto+" crypto", paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)',
                    #width=1500,
-                   height=500,hovermode='x unified')
+                   height=500,hovermode='x')
 
 # Set x-axis title
 fig4.update_xaxes(showgrid=False, title_text="datetime")
@@ -230,12 +230,13 @@ fig4.update_xaxes(
     rangeselector=dict(
         buttons=list([
             dict(count=1, label="1h", step="hour", stepmode="backward"),
-            dict(count=3, label="4h", step="hour", stepmode="backward"),
-            dict(count=6, label="12h", step="hour", stepmode="todate"),
-            dict(count=1, label="1d", step="day", stepmode="backward"),
+            dict(count=4, label="4h", step="hour", stepmode="backward"),
+            dict(count=24, label="1d", step="hour", stepmode="todate"),
+            dict(count=15, label="15d", step="day", stepmode="backward"),
             dict(step="all")
         ])
     ))
+fig4.update_xaxes(rangeselector_font_color="#1e222d")
 # Set y-axes titles
 fig4.update_yaxes(showgrid=False, title_text="<b>close " + str(selected_crypto) + "</b>  ", secondary_y=False)
 fig4.update_yaxes(showgrid=False, title_text="<b>close_btc</b> ", secondary_y=True)
@@ -278,13 +279,15 @@ fig5.add_trace(go.Scatter(x=df_initial_tps.index, y=df_initial_tps_global["tps_g
                                                                     color='rgb(250, 0, 0)')), row=5, col=1, secondary_y=False)
 #fig5.add_trace(go.Scatter(x=df_initial_ats.index, y=rawfinal['close'], name='close and ats_index' + ' ' + str(selected_crypto), visible='legendonly', line=dict(width=2, color='rgb(229, 151, 250)')), row=5,col=1, secondary_y=True,)
 #fig5.add_trace( go.Scatter(x=df_initial_tps.index, y=df_initial_tps_global["tps_global"].rolling(20).mean(), name="MAVG_tps_weighted_global ", visible='legendonly'), row=5, col=1, secondary_y=False)
-fig5.update_xaxes(matches='x1',automargin=True)
+fig5.update_xaxes(matches='x1',automargin=True,showgrid=False,
+        showline=False)
 
 fig5.update_layout(title_text="Side By Side ATS/TPS " + selected_crypto + " ATS/TPS GLOBAL", paper_bgcolor='rgba(0,0,0,0)',
-                   plot_bgcolor='rgba(0,0,0,0)',hovermode='x unified',height=800,
+                   plot_bgcolor='rgba(0,0,0,0)',hovermode='x',height=800,
                    #width=1500,
                    autosize=True,yaxis=dict(title="close price"),yaxis3=dict(title="ats index"),yaxis5=dict(title="ats global index"),yaxis7=dict(title="tps index"),yaxis9=dict(title="tps global index"))
-fig5.update_yaxes(automargin=True)
+fig5.update_yaxes(automargin=True,showgrid=False,
+        showline=False)
 
 st.header('**Side By Side ATS/TPS**')
 
