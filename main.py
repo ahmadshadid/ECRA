@@ -11,7 +11,7 @@ from plotly.subplots import make_subplots
 
 from mongodbcon import crypto_klines, load_data,load_tps_rps
 
-
+st.set_page_config(layout="wide")
 st.sidebar.image("wbor.png", use_column_width=True)
 st.title('Cryptos Exploration')
 
