@@ -241,6 +241,8 @@ fig4.update_xaxes(rangeselector_font_color="#1e222d")
 fig4.update_yaxes(showgrid=False, title_text="<b>close " + str(selected_crypto) + "</b>  ", secondary_y=False)
 fig4.update_yaxes(showgrid=False, title_text="<b>close_btc</b> ", secondary_y=True)
 fig4.update_yaxes(automargin=True)
+fig4.update_xaxes(showspikes=True)
+fig4.update_yaxes(showspikes=True)
 st.header('**Closing Price**')
 
 st.plotly_chart(fig4,use_container_width=True)
@@ -288,6 +290,8 @@ fig5.update_layout(title_text="Side By Side ATS/TPS " + selected_crypto + " ATS/
                    autosize=True,yaxis=dict(title="close price"),yaxis3=dict(title="ats index"),yaxis5=dict(title="ats global index"),yaxis7=dict(title="tps index"),yaxis9=dict(title="tps global index"))
 fig5.update_yaxes(automargin=True,showgrid=False,
         showline=False)
+fig5.update_xaxes(showspikes=True)
+fig5.update_yaxes(showspikes=True)
 
 st.header('**Side By Side ATS/TPS**')
 
