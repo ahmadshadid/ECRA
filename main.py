@@ -292,6 +292,9 @@ fig5.update_yaxes(automargin=True,showgrid=False,
         showline=False)
 fig5.update_xaxes(showspikes=True)
 fig5.update_yaxes(showspikes=True)
+fig5.update_traces(xaxis="x5")
+
+
 fig5.update_xaxes(spikemode='across+marker')
 
 st.header('**Side By Side ATS/TPS**')
